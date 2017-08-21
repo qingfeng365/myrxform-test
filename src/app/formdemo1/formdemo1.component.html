@@ -1,0 +1,32 @@
+
+<div class="panel panel-success">
+  <div class="panel-heading">
+    <h3 class="panel-title">基本的响应式表单</h3>
+  </div>
+  <div class="panel-body">
+    <form [formGroup]="formModel" (submit)="onSubmit()">
+      <div>名称:
+        <input type="text" formControlName="userName"/>
+      </div>
+      <div formGroupName="date">
+        <div>开始日期:
+          <input type="date" formControlName="from"/>
+        </div>
+        <div>结束日期:
+          <input type="date" formControlName="to"/>
+        </div>
+      </div>
+      <div>
+        <ul formArrayName="emails">
+          <li *ngFor="let email of formModel.get('emails').controls; let i = index">
+            <input type="text" [formControlName]="i"/>
+          </li>
+          <button type="button" (click)="addEmail()">新增email</button>
+        </ul>
+      </div>
+      <div>
+        <button type="submit">保存</button>
+      </div>
+    </form>
+  </div>
+</div>

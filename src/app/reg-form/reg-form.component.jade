@@ -1,0 +1,23 @@
+.panel.panel-success
+  .panel-heading
+    h3.panel-title 注册表单
+  .panel-body
+    form([formGroup]="formModel",(submit)="onSubmit()")
+      div
+        | 用户名:
+        input(type="text",formControlName="username")
+      div
+        | 手机号:
+        input(type="text",formControlName="mobile")
+      div(formGroupName="passwordsGroup")
+        div
+          | 密码:
+          input(type="password",formControlName="password")
+        div
+          | 确认密码:
+          input(type="password",formControlName="confirmpw")
+      div
+        button(type="submit") 注册
+    hr
+    pre {{formModel.value|json}}
+    pre {{formModel.status}}
