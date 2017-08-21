@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { passWordMatchValidator } from '../Validator/Validator';
+import { passWordMatchValidator, matchValidator } from '../Validator/Validator';
+
+import { Observable } from 'rxjs/Rx';
+
 
 @Component({
   selector: 'app-reg-form',
@@ -26,10 +29,14 @@ export class RegFormComponent implements OnInit {
         mobile: ['', Validators.pattern(/^1[0-9]{10}$/)],
         passwordsGroup:
         this.fb.group({
-          password: ['', [Validators.required, Validators.minLength(6)]],
+          password: ['',
+            [Validators.required, Validators.minLength(6)],
+            [this.passWordUsedAsyncValidator]],
           confirmpw: ['']
         },
-          { validator: passWordMatchValidator })
+          {
+            validator: matchValidator('password', 'confirmpw')
+          })
       }
     );
   }
@@ -55,5 +62,12 @@ export class RegFormComponent implements OnInit {
         JSON.stringify(this.formModel.get('passwordsGroup').errors));
     }
 
+  }
+
+  passWordUsedAsyncValidator(control: FormControl) {
+    return Observable.of(control.value as string)
+      .map(v => v.indexOf('1') !== 0)
+      .map(valid => valid ? null : { passWordUsed: true })
+      .delay(5000);
   }
 }

@@ -6,16 +6,34 @@
       div
         | 用户名:
         input(type="text",formControlName="username")
+      div([hidden]="formModel.get('username').untouched")
+        div([hidden]="!formModel.hasError('required','username')")
+          | 用户名是必填项
+        div([hidden]="!formModel.hasError('minlength','username')")
+          | 用户名最小长度是6
       div
         | 手机号:
         input(type="text",formControlName="mobile")
+      div([hidden]="formModel.get('mobile').pristine")
+        div([hidden]="!formModel.hasError('pattern','mobile')")
+          | 请输入正确的手机号
       div(formGroupName="passwordsGroup")
         div
           | 密码:
           input(type="password",formControlName="password")
+        div([hidden]="formModel.get('passwordsGroup.password').untouched")
+          div([hidden]="!formModel.hasError('required','passwordsGroup.password')")
+            | 密码是必填项
+          div([hidden]="!formModel.hasError('minlength','passwordsGroup.password')")
+            | 密码最小长度是6
+          div([hidden]="!formModel.hasError('passWordUsed','passwordsGroup.password')")
+            | 该密码最近已使用过
         div
           | 确认密码:
           input(type="password",formControlName="confirmpw")
+        div([hidden]="formModel.get('passwordsGroup').pristine")
+          div([hidden]="!formModel.hasError('match','passwordsGroup')")
+            | {{formModel.getError('match','passwordsGroup')?.desc}}
       div
         button(type="submit") 注册
     hr
